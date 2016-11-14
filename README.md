@@ -2,7 +2,8 @@
 
 A simple python logger which writes logs to disk with some default configs.
 
-Compatible with Python 2.7 and 3.5
+### Compatible with:
+Python 2.7 and 3.5
 
 ### Current stable version:
     0.1.0
