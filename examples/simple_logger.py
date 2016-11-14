@@ -5,7 +5,7 @@
 
 import logging
 
-from pyrecolog import HandlerType, setup_logger
+from pylogging import HandlerType, setup_logger
 
 logger = logging.getLogger(__name__)
 
