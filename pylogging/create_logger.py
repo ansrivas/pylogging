@@ -38,8 +38,12 @@ def __set_log_levels(level_dict):
             logging.getLogger(key).setLevel(LogLevel.get_level(val))
 
 
-def __setup_file_logging(g_logger=None, log_directory='.', file_handler_type=HandlerType.TIME_ROTATING_FILE_HANDLER,
-                         backup_count=100, max_file_size_bytes=10000, when_to_rotate='D'):
+def __setup_file_logging(g_logger=None,
+                         log_directory='.',
+                         file_handler_type=HandlerType.TIME_ROTATING_FILE_HANDLER,
+                         backup_count=100,
+                         max_file_size_bytes=10000,
+                         when_to_rotate='D'):
     """Attach logs to be written to disk if its required."""
     generated_files = os.path.join(os.path.abspath(os.path.expanduser(log_directory)))
     if not os.path.exists(generated_files):
@@ -78,9 +82,14 @@ def __setup_file_logging(g_logger=None, log_directory='.', file_handler_type=Han
     print('Logging into directory {}\n'.format(generated_files))
 
 
-def setup_logger(log_directory='.', file_handler_type=HandlerType.TIME_ROTATING_FILE_HANDLER,
-                 allow_console_logging=True, allow_file_logging=True, backup_count=100, max_file_size_bytes=100000,
-                 when_to_rotate='D', change_log_level=None):
+def setup_logger(log_directory='.',
+                 file_handler_type=HandlerType.TIME_ROTATING_FILE_HANDLER,
+                 allow_console_logging=True,
+                 allow_file_logging=True,
+                 backup_count=100,
+                 max_file_size_bytes=100000,
+                 when_to_rotate='D',
+                 change_log_level=None):
     """Set up the global logging settings.
 
     Args:
@@ -118,5 +127,9 @@ def setup_logger(log_directory='.', file_handler_type=HandlerType.TIME_ROTATING_
         logger.addHandler(handler)
 
     if allow_file_logging:
-        __setup_file_logging(g_logger=logger, log_directory=log_directory, file_handler_type=file_handler_type,
-                             backup_count=backup_count, max_file_size_bytes=max_file_size_bytes, when_to_rotate=when_to_rotate)
+        __setup_file_logging(g_logger=logger,
+                             log_directory=log_directory,
+                             file_handler_type=file_handler_type,
+                             backup_count=backup_count,
+                             max_file_size_bytes=max_file_size_bytes,
+                             when_to_rotate=when_to_rotate)
