@@ -10,9 +10,16 @@ Python 2.7 and 3.5
 
 ### Installation:
 
-  ```
-  pip install git+https://github.com/ansrivas/pylogging.git --upgrade
-  ```
+#### Install using pip
+```
+pip install git+https://github.com/ansrivas/pylogging.git --upgrade
+```
+
+#### Add to requirements.txt of your project
+```
+git+ssh://git@github.com/ansrivas/pylogging#egg=pylogging
+```
+
 
 ### Usage:
 
