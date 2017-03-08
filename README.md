@@ -15,10 +15,23 @@ Python 2.7 and 3.5
 pip install git+https://github.com/ansrivas/pylogging.git --upgrade
 ```
 
-#### Add to requirements.txt of your project
-```
-git+ssh://git@github.com/ansrivas/pylogging#egg=pylogging
-```
+#### Install by adding to requirements.txt of your project
+* Add the following lines to your `requirements.txt` file.  
+`git+https://github.com/ansrivas/pylogging.git`
+
+* Install all packages in your `requirements.txt` file by running the command:  
+`$ pip install -r requirements.txt`
+
+
+#### Install by adding to setup.py of your project
+* Add the following to the `install_requires` parameter of your setup function:  
+`install_requires=['pylogging==0.1.0'],`
+
+* Add the following to the `dependency_links` parameter of your setup function:  
+`dependency_links=['https://github.com/ansrivas/pylogging/tarball/master#egg=pylogging-0.1.0'],`
+
+* Install your project along with `pylogging` by running the command:  
+`python setup.py install`
 
 
 ### Usage:
