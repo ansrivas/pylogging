@@ -8,5 +8,5 @@ setup(name='pylogging',
       url='https://github.com/ansrivas/pylogging',
       download_url='https://github.com/ansrivas/pylogging/tarball/0.2.0',
       license='MIT',
-      install_requires=['future', 'requests', 'requests-futures'],
+      install_requires=['future', 'requests', 'requests-futures', 'ujson', 'graypy'],
       packages=find_packages())

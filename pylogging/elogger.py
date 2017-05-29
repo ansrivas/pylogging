@@ -19,11 +19,11 @@ class ElasticLoggger(object):
     across the application. Just create the object of this class and keep reusing it.
     """
 
-    def __init__(self, app_name, elastic_url, headers=None, auth=None):
+    def __init__(self, tag, elastic_url, headers=None, auth=None):
         """Initialize the ElasticLoggger class.
 
         Args:
-            app_name      :Name of the application which is using current logger
+            tag           :Unique identifiable tag for the application which is using current logger
             elastic_url   :Url of elastic-http-input to push logs to (for eg. 'http://localhost:3332' )
             headers       :Since this is post request headers are required, defaults to {'content-type': 'application/json'}
             auth          :A tuple containing username and password: for eg.  ('myuser', 'mypassword')
@@ -39,17 +39,19 @@ class ElasticLoggger(object):
         self.info_method = partial(self.__log, level='info')
         self.exception_method = partial(self.__log, level='exception')
         self.session = FuturesSession(max_workers=10)
-        self.app_name = app_name
+        self.tag = tag
 
-    def set_application_name(self, app_name):
+    def set_application_name(self, tag):
         """Rename the application `explicitly` for which logs are being generated."""
-        self.app_name = app_name
+        self.tag = tag
 
     def __log(self, msg, level):
-        payload = {'app_name': str(self.app_name), 'log_level': level, 'message': msg}
+        payload = {'tag': str(self.tag), 'log_level': level, 'message': msg}
         try:
-            self.session.post(url=self.elastic_url, data=json.dumps(payload),
-                              headers=self.headers, auth=self.auth)
+            self.session.post(url=self.elastic_url,
+                              data=json.dumps(payload),
+                              headers=self.headers,
+                              auth=self.auth)
         except ConnectionError as ce:
             logging.error(ce.message)
             logging.exception('Unable to connect to Elastic Search. Check the `elastic_url` and `auth`')

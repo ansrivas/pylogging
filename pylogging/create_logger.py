@@ -77,7 +77,8 @@ def setup_logger(log_directory='.',
                  max_file_size_bytes=100000,
                  when_to_rotate='D',
                  change_log_level=None,
-                 log_formatter=Formatters.TextFormatter):
+                 log_formatter=Formatters.TextFormatter,
+                 gelf_handler=None):
     """Set up the global logging settings.
 
     Args:
@@ -96,6 +97,7 @@ def setup_logger(log_directory='.',
                                         'W0'-'W6'	Weekday (0=Monday)
                                         'midnight'	Roll over at midnight
         change_log_level (dict)        :A dictionary of handlers with corresponding log-level ( for eg. {'requests':'warning'} )
+        gelf_handler                   :An external handler for graylog data publishing.
     """
     if file_handler_type not in [HandlerType.ROTATING_FILE_HANDLER,
                                  HandlerType.TIME_ROTATING_FILE_HANDLER]:
@@ -106,6 +108,9 @@ def setup_logger(log_directory='.',
 
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
+
+    if gelf_handler:
+        logger.addHandler(gelf_handler)
 
     # create console handler and set level to info
     if allow_console_logging:
@@ -120,5 +125,4 @@ def setup_logger(log_directory='.',
                              file_handler_type=file_handler_type,
                              backup_count=backup_count,
                              max_file_size_bytes=max_file_size_bytes,
-                             when_to_rotate=when_to_rotate,
-                             log_formatter=log_formatter)
+                             when_to_rotate=when_to_rotate)
