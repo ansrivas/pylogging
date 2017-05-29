@@ -23,10 +23,10 @@ class ElasticLoggger(object):
         """Initialize the ElasticLoggger class.
 
         Args:
-            app_name:    Name of the application which is using current logger
-            elastic_url: Url of elastic-http-input to push logs to (for eg. 'http://localhost:3332' )
-            headers:     Since this is post request headers are required, defaults to {'content-type': 'application/json'}
-            auth:        A tuple containing username and password: for eg.  ('myuser', 'mypassword')
+            app_name      :Name of the application which is using current logger
+            elastic_url   :Url of elastic-http-input to push logs to (for eg. 'http://localhost:3332' )
+            headers       :Since this is post request headers are required, defaults to {'content-type': 'application/json'}
+            auth          :A tuple containing username and password: for eg.  ('myuser', 'mypassword')
         """
         self.elastic_url = elastic_url
         self.auth = auth
