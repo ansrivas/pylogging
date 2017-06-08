@@ -1,6 +1,6 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Docstring for module."""
+"""Module to manage different log levels based on different strings."""
 
 import logging
 
@@ -8,7 +8,7 @@ from future.utils import raise_with_traceback as rwt
 
 
 class LogLevel(object):
-    """."""
+    """Manage loglevels based on different strings."""
 
     levels = {
         'DEBUG': logging.DEBUG,

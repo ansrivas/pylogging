@@ -93,13 +93,13 @@ def setup_logger(log_directory='.',
     """Set up the global logging settings.
 
     Args:
-        log_directory:str          directory to write log files to. Applicable only when `allow_file_logging` = True
-        file_handler_type:         object of logging handler from HandlerType class. Applicable only when `allow_file_logging` = True
-        allow_console_logging:bool Turn off/on the console logging.
-        allow_file_logging:bool    Turn off/on if logs need to go in files as well.
-        backup_count:int           Number of files to backup before rotating the logs.
-        max_file_size_bytes:int    Size of file in bytes before rotating the file. Applicable only to ROTATING_FILE_HANDLER.
-        when_to_rotate:str         Duration after which a file can be rotated. Applicable only to TIME_ROTATING_FILE_HANDLER
+        log_directory (str)          :Directory to write log files to. Applicable only when `allow_file_logging` = True
+        file_handler_type:           :object of logging handler from HandlerType class. Applicable only when `allow_file_logging` = True
+        allow_console_logging (bool) :Turn off/on the console logging.
+        allow_file_logging (bool)    :Turn off/on if logs need to go in files as well.
+        backup_count (int)           :Number of files to backup before rotating the logs.
+        max_file_size_bytes (int)    :Size of file in bytes before rotating the file. Applicable only to ROTATING_FILE_HANDLER.
+        when_to_rotate (str)         :Duration after which a file can be rotated. Applicable only to TIME_ROTATING_FILE_HANDLER
                                    Accepts following values:
                                     'S'	Seconds
                                     'M'	Minutes
@@ -107,7 +107,7 @@ def setup_logger(log_directory='.',
                                     'D'	Days
                                     'W0'-'W6'	Weekday (0=Monday)
                                     'midnight'	Roll over at midnight
-        change_log_level:dict      A dictionary of handlers with corresponding log-level ( for eg. {'requests':'warning'} )
+        change_log_level (dict)      :A dictionary of handlers with corresponding log-level ( for eg. {'requests':'warning'} )
     """
     if file_handler_type not in [HandlerType.ROTATING_FILE_HANDLER,
                                  HandlerType.TIME_ROTATING_FILE_HANDLER]:
