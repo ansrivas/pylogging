@@ -20,6 +20,14 @@ pylogging\.elogger module
     :undoc-members:
     :show-inheritance:
 
+pylogging\.formatters module
+----------------------------
+
+.. automodule:: pylogging.formatters
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 pylogging\.handler\_types module
 --------------------------------
 
