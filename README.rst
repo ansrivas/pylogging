@@ -90,4 +90,5 @@ Important arguments to ``setup_logger`` function:
                                     'W0'-'W6'   Weekday (0=Monday)
                                     'midnight'  Roll over at midnight
     change_log_level (dict)        :A dictionary of handlers with corresponding log-level ( for eg. {'requests':'warning'} )
+    console_log_level (dict)       :Change the LogLevel of console log handler, default is INFO
     gelf_handler                   :An external handler for graylog data publishing.
