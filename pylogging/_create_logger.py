@@ -99,7 +99,7 @@ def setup_logger(log_directory='.',
                                         'W0'-'W6'	Weekday (0=Monday)
                                         'midnight'	Roll over at midnight
         change_log_level (dict)        :A dictionary of handlers with corresponding log-level ( for eg. {'requests':'warning'} )
-        console_log_level (dict)       :Change the LogLevel of console log handler, default is INFO
+        console_log_level (logging)    :Change the LogLevel of console log handler, default is logging.INFO (e.g. logging.DEBUG, logging.INFO)
         gelf_handler                   :An external handler for graylog data publishing.
     """
     file_handlers = [HandlerType.ROTATING_FILE_HANDLER, HandlerType.TIME_ROTATING_FILE_HANDLER]
