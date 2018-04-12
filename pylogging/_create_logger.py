@@ -2,26 +2,26 @@
 # -*- coding: utf-8 -*-
 """Docstring for logging module."""
 
+import os
 import logging
 import logging.handlers
-import os
 
-from future.utils import raise_with_traceback as rwt
-from future.utils import iteritems
-
-from pylogging.handler_types import HandlerType
 from pylogging.log_levels import LogLevel
 from pylogging.formatters import Formatters
+from pylogging.handler_types import HandlerType
+
+from future.utils import iteritems
+from future.utils import raise_with_traceback as rwt
 
 
 def __set_log_levels(level_dict):
     """Set the log levels for any log-handler for e.g. level_dict = {'requests':'error'}."""
     if not isinstance(level_dict, dict):
-        rwt(TypeError('Expecting dict object with format:  \{\'requests\':\'warning\'\} \n' +
+        rwt(TypeError('Expecting dict object with format:  \{\'requests\':\'warning\'\} \n'
                       'Available levels are: {0}'.format(LogLevel.levels.keys)))
-    else:
-        for key, val in iteritems(level_dict):
-            logging.getLogger(key).setLevel(LogLevel.get_level(val))
+
+    for key, val in iteritems(level_dict):
+        logging.getLogger(key).setLevel(LogLevel.get_level(val))
 
 
 def __setup_file_logging(g_logger=None,
@@ -35,6 +35,7 @@ def __setup_file_logging(g_logger=None,
     generated_files = os.path.join(os.path.abspath(os.path.expanduser(log_directory)))
     if not os.path.exists(generated_files):
         os.makedirs(generated_files)
+
     all_logs_fname = '{0}/all.log'.format(generated_files)
     error_logs_fname = '{0}/error.log'.format(generated_files)
 
@@ -78,7 +79,8 @@ def setup_logger(log_directory='.',
                  when_to_rotate='D',
                  change_log_level=None,
                  log_formatter=Formatters.TextFormatter,
-                 gelf_handler=None):
+                 gelf_handler=None,
+                 **kwargs):
     """Set up the global logging settings.
 
     Args:
@@ -97,16 +99,18 @@ def setup_logger(log_directory='.',
                                         'W0'-'W6'	Weekday (0=Monday)
                                         'midnight'	Roll over at midnight
         change_log_level (dict)        :A dictionary of handlers with corresponding log-level ( for eg. {'requests':'warning'} )
+        console_log_level (logging)    :Change the LogLevel of console log handler, default is logging.INFO (e.g. logging.DEBUG, logging.INFO)
         gelf_handler                   :An external handler for graylog data publishing.
     """
-    if file_handler_type not in [HandlerType.ROTATING_FILE_HANDLER,
-                                 HandlerType.TIME_ROTATING_FILE_HANDLER]:
+    file_handlers = [HandlerType.ROTATING_FILE_HANDLER, HandlerType.TIME_ROTATING_FILE_HANDLER]
+    if file_handler_type not in file_handlers:
         rwt(ValueError('Please pass an object of HandlerType class'))
 
     if change_log_level:
         __set_log_levels(change_log_level)
 
     logger = logging.getLogger()
+    logger.propagate = False
     logger.setLevel(logging.DEBUG)
 
     if gelf_handler:
@@ -115,7 +119,8 @@ def setup_logger(log_directory='.',
     # create console handler and set level to info
     if allow_console_logging:
         handler = logging.StreamHandler()
-        handler.setLevel(logging.INFO)
+        log_level = kwargs.get("console_log_level", logging.INFO)
+        handler.setLevel(log_level)
         handler.setFormatter(log_formatter)
         logger.addHandler(handler)
 

@@ -1,12 +1,46 @@
+import re
+from os import path
+
+from codecs import open  # To use a consistent encoding
 from setuptools import find_packages, setup
 
+here = path.abspath(path.dirname(__file__))
+
+# Get the long description from the relevant file
+with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
+    long_description = f.read()
+
+
+def get_version():
+    with open('pylogging/__init__.py') as version_file:
+        return re.search(r"""__version__\s+=\s+(['"])(?P<version>.+?)\1""",
+                         version_file.read()).group('version')
+
+
 setup(name='pylogging',
-      version='0.2.0',
+      version=get_version(),
       description='File logging for Python',
+      long_description=long_description,
       author='Ankur Srivastava',
       author_email='best.ankur@gmail.com',
       url='https://github.com/ansrivas/pylogging',
-      download_url='https://github.com/ansrivas/pylogging/tarball/0.2.0',
+      download_url='https://github.com/ansrivas/pylogging/tarball/{0}'.format(get_version()),
+      include_package_data=True,
       license='MIT',
-      install_requires=['future', 'requests', 'requests-futures', 'ujson', 'graypy'],
+      zip_safe=False,
+      install_requires=['future', 'requests-futures', 'ujson', 'graypy'],
+      extras_require={
+          'dev': [
+              'pytest',
+              'pytest-pep8',
+              'pytest-cov',
+          ]
+      },
+      classifiers=[
+          "Programming Language :: Python :: 2",
+          "Programming Language :: Python :: 2.7",
+          "Programming Language :: Python :: 3",
+          "Programming Language :: Python :: 3.4",
+          "Programming Language :: Python :: 3.5",
+          "Programming Language :: Python :: 3.6", ],
       packages=find_packages())
