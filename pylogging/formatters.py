@@ -15,13 +15,22 @@ class TextFormatter(logging.Formatter):
 
     datefmt = '%Y-%m-%d %H:%M:%S'
 
+    def __init__(self, context=None):
+        self.context = context
+        super(TextFormatter, self).__init__()
+
     def format(self, record):
         """Default formatter."""
         error_location = "%s.%s" % (record.name, record.funcName)
         line_number = "%s" % (record.lineno)
         location_line = error_location[:32] + ":" + line_number
-        s = "%.19s [%-8s] [%-36s] %s" % (self.formatTime(record, self.datefmt),
-                                         record.levelname,  location_line, record.getMessage())
+
+        s = "%.19s [%-8s] [%-36s] %s" % (self.formatTime(record, TextFormatter.datefmt),
+                                         record.levelname, location_line, record.getMessage())
+        if self.context:
+            s = "%.19s [%s] [%-8s] [%-36s] %s" % (self.formatTime(record, TextFormatter.datefmt), self.context,
+                                                  record.levelname, location_line, record.getMessage())
+
         return s
 
 
@@ -35,7 +44,7 @@ class JsonFormatter(logging.Formatter):
         error_location = "%s.%s" % (record.name, record.funcName)
         line_number = "%s" % (record.lineno)
         location_line = error_location[:32] + ":" + line_number
-        output = {'log_time': self.formatTime(record, self.datefmt),
+        output = {'log_time': self.formatTime(record, TextFormatter.datefmt),
                   'log_location': location_line,
                   'log_level': record.levelname,
                   'message': record.getMessage()}
