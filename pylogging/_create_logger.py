@@ -2,16 +2,15 @@
 # -*- coding: utf-8 -*-
 """Docstring for logging module."""
 
-import os
 import logging
 import logging.handlers
+import os
 
-from pylogging.log_levels import LogLevel
+from future.utils import raise_with_traceback as rwt
+from future.utils import iteritems
 from pylogging.formatters import Formatters
 from pylogging.handler_types import HandlerType
-
-from future.utils import iteritems
-from future.utils import raise_with_traceback as rwt
+from pylogging.log_levels import LogLevel
 
 
 def __set_log_levels(level_dict):
@@ -80,6 +79,7 @@ def setup_logger(log_directory='.',
                  change_log_level=None,
                  log_formatter=Formatters.TextFormatter,
                  gelf_handler=None,
+                 logger_name=None,
                  **kwargs):
     """Set up the global logging settings.
 
@@ -101,6 +101,10 @@ def setup_logger(log_directory='.',
         change_log_level (dict)        :A dictionary of handlers with corresponding log-level ( for eg. {'requests':'warning'} )
         console_log_level (logging)    :Change the LogLevel of console log handler, default is logging.INFO (e.g. logging.DEBUG, logging.INFO)
         gelf_handler                   :An external handler for graylog data publishing.
+        logger_name (str)              :If None, then a default logger is created using `logging.getLogger()` and all handlers are registered
+                                        with that logger. If a string name is provided then a logger with that name is created and similarly
+                                        all handlers are registered with this logger. However if a logger already exists with that name,
+                                        then it reuses that logger (does not overwrite or recreate) and adds new handlers to it.
     """
     file_handlers = [HandlerType.ROTATING_FILE_HANDLER, HandlerType.TIME_ROTATING_FILE_HANDLER]
     if file_handler_type not in file_handlers:
@@ -109,7 +113,12 @@ def setup_logger(log_directory='.',
     if change_log_level:
         __set_log_levels(change_log_level)
 
-    logger = logging.getLogger()
+    # Get logger object.
+    if logger_name:
+        logger = logging.getLogger(logger_name)
+    else:
+        logger = logging.getLogger()
+
     logger.propagate = False
     logger.setLevel(logging.DEBUG)
 
