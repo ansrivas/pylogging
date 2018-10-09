@@ -6,4 +6,4 @@ from ._create_logger import setup_logger
 from .handler_types import HandlerType
 from .formatters import Formatters
 
-__version__ = '0.2.3'
+__version__ = '0.2.4'
