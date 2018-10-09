@@ -17,8 +17,8 @@ from future.utils import raise_with_traceback as rwt
 def __set_log_levels(level_dict):
     """Set the log levels for any log-handler for e.g. level_dict = {'requests':'error'}."""
     if not isinstance(level_dict, dict):
-        rwt(TypeError('Expecting dict object with format:  \{\'requests\':\'warning\'\} \n'
-                      'Available levels are: {0}'.format(LogLevel.levels.keys)))
+        rwt(TypeError("Expecting dict object with format for e.g. {'requests':'warning'} \n"
+                      "Available levels are: {0}".format(LogLevel.levels.keys)))
 
     for key, val in iteritems(level_dict):
         logging.getLogger(key).setLevel(LogLevel.get_level(val))
@@ -30,42 +30,50 @@ def __setup_file_logging(g_logger=None,
                          backup_count=100,
                          max_file_size_bytes=10000,
                          when_to_rotate='D',
-                         log_formatter=Formatters.TextFormatter):
+                         log_formatter=Formatters.TextFormatter,
+                         log_level_for_file_logging=logging.DEBUG):
     """Attach logs to be written to disk if its required."""
     generated_files = os.path.join(os.path.abspath(os.path.expanduser(log_directory)))
     if not os.path.exists(generated_files):
         os.makedirs(generated_files)
 
     all_logs_fname = '{0}/all.log'.format(generated_files)
+    info_logs_fname = '{0}/info.log'.format(generated_files)
     error_logs_fname = '{0}/error.log'.format(generated_files)
 
-    # create error file handler and set level to error
-    if file_handler_type == HandlerType.ROTATING_FILE_HANDLER:
-        handler = logging.handlers.RotatingFileHandler(error_logs_fname,
-                                                       maxBytes=max_file_size_bytes,
-                                                       backupCount=backup_count)
+    def __add_handlers_to_global_logger(file_handler_type, fname, log_level):
+        """Add different file handlers to global logger.
+
+        By default three types of files are generated in logs.
+        - all.log will contain all the log levels i.e. including DEBUG
+        - info.log will contain all the log level above and including INFO
+        - error.log will contain all the log level which are above and including ERROR
+        """
+        # create error file handler and set level to error
+        if file_handler_type == HandlerType.ROTATING_FILE_HANDLER:
+            handler = logging.handlers.RotatingFileHandler(fname,
+                                                           maxBytes=max_file_size_bytes,
+                                                           backupCount=backup_count)
+        else:
+            handler = logging.handlers.TimedRotatingFileHandler(fname,
+                                                                when=when_to_rotate,
+                                                                backupCount=backup_count)
+
+        handler.setLevel(log_level)
+        handler.setFormatter(log_formatter)
+        g_logger.addHandler(handler)
+
+    if log_level_for_file_logging == logging.DEBUG:
+        __add_handlers_to_global_logger(file_handler_type, error_logs_fname, logging.ERROR)
+        __add_handlers_to_global_logger(file_handler_type, all_logs_fname, logging.DEBUG)
+        __add_handlers_to_global_logger(file_handler_type, info_logs_fname, logging.INFO)
+    elif log_level_for_file_logging == logging.INFO:
+        __add_handlers_to_global_logger(file_handler_type, error_logs_fname, logging.ERROR)
+        __add_handlers_to_global_logger(file_handler_type, info_logs_fname, logging.INFO)
+    elif log_level_for_file_logging == logging.WARNING:
+        __add_handlers_to_global_logger(file_handler_type, error_logs_fname, logging.WARNING)
     else:
-        handler = logging.handlers.TimedRotatingFileHandler(error_logs_fname,
-                                                            when=when_to_rotate,
-                                                            backupCount=backup_count)
-
-    handler.setLevel(logging.ERROR)
-    handler.setFormatter(log_formatter)
-    g_logger.addHandler(handler)
-
-    # create debug file handler and set level to debug
-    if file_handler_type == HandlerType.ROTATING_FILE_HANDLER:
-        handler = logging.handlers.RotatingFileHandler(all_logs_fname,
-                                                       maxBytes=max_file_size_bytes,
-                                                       backupCount=backup_count)
-    else:
-        handler = logging.handlers.TimedRotatingFileHandler(all_logs_fname,
-                                                            when=when_to_rotate,
-                                                            backupCount=backup_count)
-
-    handler.setLevel(logging.DEBUG)
-    handler.setFormatter(log_formatter)
-    g_logger.addHandler(handler)
+        __add_handlers_to_global_logger(file_handler_type, error_logs_fname, logging.ERROR)
 
     print('Logging into directory {}\n'.format(generated_files))
 
@@ -80,6 +88,7 @@ def setup_logger(log_directory='.',
                  change_log_level=None,
                  log_formatter=Formatters.TextFormatter,
                  gelf_handler=None,
+                 log_level_for_file_logging=logging.DEBUG,
                  **kwargs):
     """Set up the global logging settings.
 
@@ -130,4 +139,5 @@ def setup_logger(log_directory='.',
                              file_handler_type=file_handler_type,
                              backup_count=backup_count,
                              max_file_size_bytes=max_file_size_bytes,
-                             when_to_rotate=when_to_rotate)
+                             when_to_rotate=when_to_rotate,
+                             log_level_for_file_logging=log_level_for_file_logging)
