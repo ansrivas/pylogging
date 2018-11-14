@@ -31,7 +31,7 @@ def __setup_file_logging(g_logger=None,
                          max_file_size_bytes=10000,
                          when_to_rotate='D',
                          log_formatter=Formatters.TextFormatter,
-                         log_filter=log_filter):
+                         log_filter=None):
     """Attach logs to be written to disk if its required."""
     generated_files = os.path.join(os.path.abspath(os.path.expanduser(log_directory)))
     if not os.path.exists(generated_files):
