@@ -14,7 +14,7 @@ Current stable version:
 
 ::
 
-    0.2.3
+    0.2.5
 
 Installation:
 ~~~~~~~~~~~~~
@@ -39,11 +39,11 @@ Install by adding to setup.py of your project
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 -  Add the following to the ``install_requires`` parameter of your setup
-   function: ``install_requires=['pylogging==0.1.0'],``
+   function: ``install_requires=['pylogging==0.2.5'],``
 
 -  Add the following to the ``dependency_links`` parameter of your setup
    function:
-   ``dependency_links=['https://github.com/ansrivas/pylogging/tarball/master#egg=pylogging-0.1.0'],``
+   ``dependency_links=['https://github.com/ansrivas/pylogging/tarball/master#egg=pylogging-0.2.5'],``
 
 -  Install your project along with ``pylogging`` by running the command:
    ``python setup.py install``
@@ -75,20 +75,21 @@ Important arguments to ``setup_logger`` function:
 
 ::
 
-    log_directory (str)            :directory to write log files to. Applicable only when `allow_file_logging` = True
-    file_handler_type              :object of logging handler from HandlerType class. Applicable only when `allow_file_logging` = True
-    allow_console_logging (bool)   :Turn off/on the console logging.
-    allow_file_logging (bool)      :Turn off/on if logs need to go in files as well.
-    backup_count (int)             :Number of files to backup before rotating the logs.
-    max_file_size_bytes (int)      :Size of file in bytes before rotating the file. Applicable only to ROTATING_FILE_HANDLER.
-    when_to_rotate (str)           :Duration after which a file can be rotated. Applicable only to TIME_ROTATING_FILE_HANDLER
-                                    Accepts following values:
-                                    'S' Seconds
-                                    'M' Minutes
-                                    'H' Hours
-                                    'D' Days
-                                    'W0'-'W6'   Weekday (0=Monday)
-                                    'midnight'  Roll over at midnight
-    change_log_level (dict)        :A dictionary of handlers with corresponding log-level ( for eg. {'requests':'warning'} )
-    console_log_level (dict)       :Change the LogLevel of console log handler, default is INFO
-    gelf_handler                   :An external handler for graylog data publishing.
+  log_directory (str)            :directory to write log files to. Applicable only when `allow_file_logging` = True
+  file_handler_type              :object of logging handler from HandlerType class. Applicable only when `allow_file_logging` = True
+  allow_console_logging (bool)   :Turn off/on the console logging.
+  allow_file_logging (bool)      :Turn off/on if logs need to go in files as well.
+  backup_count (int)             :Number of files to backup before rotating the logs.
+  max_file_size_bytes (int)      :Size of file in bytes before rotating the file. Applicable only to ROTATING_FILE_HANDLER.
+  when_to_rotate (str)           :Duration after which a file can be rotated. Applicable only to TIME_ROTATING_FILE_HANDLER
+                                  Accepts following values:
+                                  'S'	Seconds
+                                  'M'	Minutes
+                                  'H'	Hours
+                                  'D'	Days
+                                  'W0'-'W6'	Weekday (0=Monday)
+                                  'midnight'	Roll over at midnight
+  change_log_level (dict)        :A dictionary of handlers with corresponding log-level ( for eg. {'requests':'warning'} )
+  console_log_level (logging)    :Change the LogLevel of console log handler, default is logging.INFO (e.g. logging.DEBUG, logging.INFO)
+  gelf_handler                   :An external handler for graylog data publishing.
+  log_tags                       :Adding contextual information to a given log handler for e.g. {'app_name': 'My Perfect App'}

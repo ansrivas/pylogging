@@ -30,7 +30,8 @@ def __setup_file_logging(g_logger=None,
                          backup_count=100,
                          max_file_size_bytes=10000,
                          when_to_rotate='D',
-                         log_formatter=Formatters.TextFormatter):
+                         log_formatter=Formatters.TextFormatter,
+                         log_filter=log_filter):
     """Attach logs to be written to disk if its required."""
     generated_files = os.path.join(os.path.abspath(os.path.expanduser(log_directory)))
     if not os.path.exists(generated_files):
@@ -48,7 +49,8 @@ def __setup_file_logging(g_logger=None,
         handler = logging.handlers.TimedRotatingFileHandler(error_logs_fname,
                                                             when=when_to_rotate,
                                                             backupCount=backup_count)
-
+    if log_filter:
+        handler.addFilter(log_filter)
     handler.setLevel(logging.ERROR)
     handler.setFormatter(log_formatter)
     g_logger.addHandler(handler)
@@ -62,7 +64,8 @@ def __setup_file_logging(g_logger=None,
         handler = logging.handlers.TimedRotatingFileHandler(all_logs_fname,
                                                             when=when_to_rotate,
                                                             backupCount=backup_count)
-
+    if log_filter:
+        handler.addFilter(log_filter)
     handler.setLevel(logging.DEBUG)
     handler.setFormatter(log_formatter)
     g_logger.addHandler(handler)
@@ -80,6 +83,7 @@ def setup_logger(log_directory='.',
                  change_log_level=None,
                  log_formatter=Formatters.TextFormatter,
                  gelf_handler=None,
+                 log_tags=None,
                  **kwargs):
     """Set up the global logging settings.
 
@@ -101,6 +105,7 @@ def setup_logger(log_directory='.',
         change_log_level (dict)        :A dictionary of handlers with corresponding log-level ( for eg. {'requests':'warning'} )
         console_log_level (logging)    :Change the LogLevel of console log handler, default is logging.INFO (e.g. logging.DEBUG, logging.INFO)
         gelf_handler                   :An external handler for graylog data publishing.
+        log_tags                       :Adding contextual information to a given log handler for e.g. {'app_name': 'My Perfect App'}
     """
     file_handlers = [HandlerType.ROTATING_FILE_HANDLER, HandlerType.TIME_ROTATING_FILE_HANDLER]
     if file_handler_type not in file_handlers:
@@ -109,11 +114,24 @@ def setup_logger(log_directory='.',
     if change_log_level:
         __set_log_levels(change_log_level)
 
+    # Check if log_tags is not defined, initialize it to empty dict
+    if not log_tags:
+        log_tags = {}
+
+    class AppFilter(logging.Filter):
+        def filter(self, record):
+            for key, value in log_tags.items():
+                setattr(record, key, value)
+            return True
+
+    log_filter = AppFilter() if log_tags else None
     logger = logging.getLogger()
     logger.propagate = False
     logger.setLevel(logging.DEBUG)
 
     if gelf_handler:
+        if log_filter:
+            gelf_handler.addFilter(log_filter)
         logger.addHandler(gelf_handler)
 
     # create console handler and set level to info
@@ -122,6 +140,8 @@ def setup_logger(log_directory='.',
         log_level = kwargs.get("console_log_level", logging.INFO)
         handler.setLevel(log_level)
         handler.setFormatter(log_formatter)
+        if log_filter:
+            handler.addFilter(log_filter)
         logger.addHandler(handler)
 
     if allow_file_logging:
@@ -130,4 +150,5 @@ def setup_logger(log_directory='.',
                              file_handler_type=file_handler_type,
                              backup_count=backup_count,
                              max_file_size_bytes=max_file_size_bytes,
-                             when_to_rotate=when_to_rotate)
+                             when_to_rotate=when_to_rotate,
+                             log_filter=log_filter)
