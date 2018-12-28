@@ -7,7 +7,7 @@ configs.
 Compatible with:
 ~~~~~~~~~~~~~~~~
 
-Python 2.7 and 3.5
+Python 2.7 and 3.5+
 
 Current stable version:
 ~~~~~~~~~~~~~~~~~~~~~~~
