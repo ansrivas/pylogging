@@ -118,7 +118,7 @@ def setup_logger(log_directory='.',
         log_tags                       :Adding contextual information to a given log handler for e.g. {'app_name': 'My Perfect App'}
     """
     file_handlers = [HandlerType.ROTATING_FILE_HANDLER, HandlerType.TIME_ROTATING_FILE_HANDLER]
-    if file_handler_type not in file_handlers:
+    if allow_file_logging and (file_handler_type not in file_handlers):
         rwt(ValueError('Please pass an object of HandlerType class'))
 
     if change_log_level:
