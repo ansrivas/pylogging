@@ -14,7 +14,7 @@ Current stable version:
 
 ::
 
-    0.2.5
+    0.2.6
 
 Installation:
 ~~~~~~~~~~~~~
@@ -39,11 +39,11 @@ Install by adding to setup.py of your project
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 -  Add the following to the ``install_requires`` parameter of your setup
-   function: ``install_requires=['pylogging==0.2.5'],``
+   function: ``install_requires=['pylogging==0.2.6'],``
 
 -  Add the following to the ``dependency_links`` parameter of your setup
    function:
-   ``dependency_links=['https://github.com/ansrivas/pylogging/tarball/master#egg=pylogging-0.2.5'],``
+   ``dependency_links=['https://github.com/ansrivas/pylogging/tarball/master#egg=pylogging-0.2.6'],``
 
 -  Install your project along with ``pylogging`` by running the command:
    ``python setup.py install``
