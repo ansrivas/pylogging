@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+# tag:0.3.0 / 2019-04-19
+- Fixes issue 11
+
 # tag:0.2.6 / 2019-03-14
 - Fixes issue 8 
 

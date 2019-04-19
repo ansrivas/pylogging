@@ -14,7 +14,7 @@ Current stable version:
 
 ::
 
-    0.2.6
+    0.3.0
 
 Installation:
 ~~~~~~~~~~~~~
@@ -69,6 +69,13 @@ Usage:
         logger.error("Error logs")
         logger.debug("Debug logs")
         logger.info("Info logs")
+
+Development installation
+^^^^^^^^^^^^^^^^^^^^^^^^^
+::
+
+  pip install -e .[dev]
+
 
 Important arguments to ``setup_logger`` function:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
