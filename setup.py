@@ -1,7 +1,7 @@
 import re
+from codecs import open  # To use a consistent encoding
 from os import path
 
-from codecs import open  # To use a consistent encoding
 from setuptools import find_packages, setup
 
 here = path.abspath(path.dirname(__file__))
@@ -28,12 +28,13 @@ setup(name='pylogging',
       include_package_data=True,
       license='MIT',
       zip_safe=False,
-      install_requires=['future', 'requests-futures', 'ujson', 'graypy'],
+      install_requires=['future', 'requests-futures', 'ujson==1.35', 'graypy==1.1.2'],
       extras_require={
           'dev': [
               'pytest',
               'pytest-pep8',
               'pytest-cov',
+              'python-language-server[all]'
           ]
       },
       classifiers=[
