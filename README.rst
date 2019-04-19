@@ -70,6 +70,13 @@ Usage:
         logger.debug("Debug logs")
         logger.info("Info logs")
 
+Development installation
+^^^^^^^^^^^^^^^^^^^^^^^^^
+::
+
+  pip install -e .[dev]
+
+
 Important arguments to ``setup_logger`` function:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

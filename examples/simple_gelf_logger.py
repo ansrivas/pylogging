@@ -5,17 +5,19 @@
 
 import logging
 
+from graypy import GELFUDPHandler
+
 from pylogging import HandlerType, setup_logger
-from graypy import GELFHandler
+
 logger = logging.getLogger(__name__)
 
 # If want to add extra fields.
 # logger = logging.LoggerAdapter(logger, {"app_name": "test-service"})
 if __name__ == '__main__':
-    gelf_handler = GELFHandler(host="elk.recogizer.net",
-                               port=12201,
-                               level_names=True,
-                               debugging_fields=False)
+    gelf_handler = GELFUDPHandler(host="elk.recogizer.net",
+                                  port=12201,
+                                  level_names=True,
+                                  debugging_fields=False)
 
     setup_logger(log_directory='./logs',
                  file_handler_type=HandlerType.TIME_ROTATING_FILE_HANDLER,
