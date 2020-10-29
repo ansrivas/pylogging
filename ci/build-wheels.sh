@@ -26,12 +26,14 @@ ls -alR wheelhouse
 # Bundle external shared libraries into the wheels
 basepath=/io/wheelhouse/opt/python
 wheelname=pylogging-0.3.0-py3-none-any.whl
+
 for whl in ${basepath}/cp36-cp36m/bin/${wheelname} ${basepath}/cp37-cp37m/bin/${wheelname} ${basepath}/cp38-cp38/bin/${wheelname}; do
     repair_wheel "$whl"
 done
 
 # Install packages and test
 for PYBIN in /opt/python/cp36-cp36m/bin /opt/python/cp37-cp37m/bin /opt/python/cp38-cp38/bin; do
-    "${PYBIN}/pip" install ${wheelname} --no-index -f /io/wheelhouse/${PYBIN}
+    # "${PYBIN}/pip" install pylogging-py3-none-any.whl --no-index -f /io/wheelhouse${PYBIN}
+    "${PYBIN}/pip" install --no-index /io/wheelhouse${PYBIN}/${wheelname}
 done
 
