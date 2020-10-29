@@ -28,7 +28,7 @@ setup(name='pylogging',
       include_package_data=True,
       license='MIT',
       zip_safe=False,
-      install_requires=['future', 'requests-futures', 'ujson==3.0.0', 'graypy==2.1.0'],
+      install_requires=['future', 'requests-futures', 'ujson==4.0.1', 'graypy==2.1.0'],
       extras_require={
           'dev': [
               'pytest',
